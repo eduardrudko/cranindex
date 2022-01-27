@@ -19,3 +19,4 @@ task :environment do
 end
 
 load 'active_record/railties/databases.rake'
+load 'tasks/index_cran.rake'

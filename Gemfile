@@ -14,6 +14,6 @@ gem 'logger'
 gem 'puma'
 gem 'json'
 gem 'faraday'
-
+gem 'net-http'
 # Testing --------------------------------------------------------------------------------------------------------------
-gem 'rspec-core'
+gem 'rspec'
