@@ -1,11 +1,28 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    activemodel (6.1.4.4)
+      activesupport (= 6.1.4.4)
+    activerecord (6.1.4.4)
+      activemodel (= 6.1.4.4)
+      activesupport (= 6.1.4.4)
+    activesupport (6.1.4.4)
+      concurrent-ruby (~> 1.0, >= 1.0.2)
+      i18n (>= 1.6, < 2)
+      minitest (>= 5.1)
+      tzinfo (~> 2.0)
+      zeitwerk (~> 2.3)
+    concurrent-ruby (1.1.9)
     faraday (2.1.0)
       faraday-net_http (~> 2.0)
       ruby2_keywords (>= 0.0.4)
     faraday-net_http (2.0.1)
+    i18n (1.9.0)
+      concurrent-ruby (~> 1.0)
     json (2.6.1)
+    logger (1.5.0)
+    minitest (5.15.0)
+    multi_json (1.15.0)
     mustermann (1.1.1)
       ruby2_keywords (~> 0.0.1)
     nio4r (2.5.8)
@@ -14,6 +31,7 @@ GEM
     rack (2.2.3)
     rack-protection (2.1.0)
       rack
+    rake (13.0.6)
     rspec-core (3.10.1)
       rspec-support (~> 3.10.0)
     rspec-support (3.10.3)
@@ -23,17 +41,33 @@ GEM
       rack (~> 2.2)
       rack-protection (= 2.1.0)
       tilt (~> 2.0)
+    sinatra-contrib (2.1.0)
+      multi_json
+      mustermann (~> 1.0)
+      rack-protection (= 2.1.0)
+      sinatra (= 2.1.0)
+      tilt (~> 2.0)
+    sqlite3 (1.4.2)
     tilt (2.0.10)
+    tzinfo (2.0.4)
+      concurrent-ruby (~> 1.0)
+    zeitwerk (2.5.3)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
+  activerecord
   faraday
   json
+  logger
   puma
+  rack
+  rake
   rspec-core
   sinatra
+  sinatra-contrib
+  sqlite3
 
 RUBY VERSION
    ruby 2.6.9p207
