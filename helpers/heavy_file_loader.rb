@@ -5,7 +5,7 @@ require 'uri'
 require 'fileutils'
 
 module Helpers
-  class HeavyFileDownloader
+  class HeavyFileLoader
 
     WHITE_LISTED_FILES = ['PACKAGES.gz'].freeze
 
