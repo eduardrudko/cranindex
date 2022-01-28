@@ -1,5 +1,5 @@
 
-ruby '~> 2.6.3'
+ruby '~> 2.6.4'
 
 source 'https://rubygems.org'
 

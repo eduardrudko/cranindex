@@ -35,6 +35,10 @@ Dir.glob('./app/*.rb').sort.each do |file|
   require file
 end
 
+Dir.glob('./helpers/*.rb').sort.each do |file|
+  require file
+end
+
 map '/' do
   run RootApp
 end

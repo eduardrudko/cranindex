@@ -7,10 +7,11 @@ namespace :index do
   namespace :cran do
     desc 'make an index of cran packages'
     task :perform do
-      Helpers::HeavyFileLoader.new(
-        "#{Rack::Directory.new('').root.to_s}/tmp/PACKAGES.gz",
+      loader = Helpers::HeavyFileLoader.new(
+        "PACKAGES.gz",
         'http://cran.r-project.org/src/contrib/PACKAGES.gz'
-      ).download_file
+      )
+      loader.unzip(loader.download)
     end
   end
 end
