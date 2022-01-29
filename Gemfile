@@ -15,5 +15,6 @@ gem 'puma'
 gem 'json'
 gem 'faraday'
 gem 'net-http'
+gem 'debian-control-parser'
 # Testing --------------------------------------------------------------------------------------------------------------
 gem 'rspec'

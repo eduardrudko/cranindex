@@ -16,7 +16,7 @@ RSpec.describe Helpers::HeavyFileLoader do
     it 'unzips tar.gz files and saves decompressed file in tmp/' do
       loader = Helpers::HeavyFileLoader.new(path, url)
       file = loader.download
-      expect(loader.unzip(file)).not_to end_with '.gz'
+      expect(loader.ungzip(file)).not_to end_with '.gz'
     end
   end
 

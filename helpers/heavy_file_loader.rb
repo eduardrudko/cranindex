@@ -9,7 +9,7 @@ module Helpers
   class HeavyFileLoader
 
     WHITE_LISTED_FILES = ['PACKAGES.gz'].freeze
-    BATCH_SIZE = 256.freeze
+    BATCH_SIZE = 256
     ROOT_DIR = 'tmp'
 
     def initialize(file_name, url)
@@ -23,7 +23,7 @@ module Helpers
       fetch_and_save_by_fragments
     end
 
-    def unzip(file)
+    def ungzip(file)
       return nil unless File.file?(file)
 
       unzipped_file_path = "#{ROOT_DIR}/#{File.basename(@file_path, '.*')}"
