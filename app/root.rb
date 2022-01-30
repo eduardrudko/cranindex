@@ -2,6 +2,6 @@
 
 class RootApp < BaseApp
   get '/' do
-    'Hello world!'
+    # TODO: API for retrieving URL by name
   end
 end
