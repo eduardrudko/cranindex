@@ -13,6 +13,10 @@ DatabaseTasks.db_dir = File.join root, 'db'
 DatabaseTasks.migrations_paths = [File.join(root, 'db/migrations')]
 DatabaseTasks.root = root
 
+LOGGER = Logger.new($stdout)
+WORKERS_POOL_SIZE = 5
+
+
 task :environment do
   ActiveRecord::Base.configurations = DatabaseTasks.database_configuration
   ActiveRecord::Base.establish_connection DatabaseTasks.env.to_sym

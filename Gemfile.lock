@@ -12,8 +12,25 @@ GEM
       minitest (>= 5.1)
       tzinfo (~> 2.0)
       zeitwerk (~> 2.3)
+    celluloid (0.17.4)
+      celluloid-essentials
+      celluloid-extras
+      celluloid-fsm
+      celluloid-pool
+      celluloid-supervision
+      timers (>= 4.1.1)
+    celluloid-essentials (0.20.5)
+      timers (>= 4.1.1)
+    celluloid-extras (0.20.5)
+      timers (>= 4.1.1)
+    celluloid-fsm (0.20.5)
+      timers (>= 4.1.1)
+    celluloid-pool (0.20.5)
+      timers (>= 4.1.1)
+    celluloid-supervision (0.20.6)
+      timers (>= 4.1.1)
     concurrent-ruby (1.1.9)
-    debian-control-parser (1.0)
+    deb_control (0.0.1)
     diff-lcs (1.5.0)
     faraday (2.1.0)
       faraday-net_http (~> 2.0)
@@ -69,6 +86,7 @@ GEM
     sqlite3 (1.4.2)
     tilt (2.0.10)
     timeout (0.2.0)
+    timers (4.3.3)
     tzinfo (2.0.4)
       concurrent-ruby (~> 1.0)
     uri (0.11.0)
@@ -79,7 +97,8 @@ PLATFORMS
 
 DEPENDENCIES
   activerecord
-  debian-control-parser
+  celluloid (= 0.17.4)
+  deb_control
   faraday
   json
   logger

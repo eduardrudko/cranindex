@@ -1,58 +1,45 @@
 # frozen_string_literal: true
 
-require 'debian_control_parser'
-require_relative '../helpers/heavy_file_loader'
+require 'deb_control'
+require_relative '../helpers/heavy_file_utils'
+require_relative '../models/package'
+require_relative 'support/required_fields'
+require_relative 'support/package_worker'
 
-REQUIRED_FIELDS = %w[Package Version Depends Date/Publication Title Author Maintainer License].freeze
-PACKAGES = 'PACKAGES.gz'
+PACKAGES_FILE_NAME = 'PACKAGES.gz'
+DESC_FILE_NAME = 'DESCRIPTION'
 CRAN_DOMAIN = 'http://cran.r-project.org/'
 CRAN_ROUTE = 'src/contrib/'
-URL = "#{CRAN_DOMAIN}#{CRAN_ROUTE}#{PACKAGES}"
-
+URL = "#{CRAN_DOMAIN}#{CRAN_ROUTE}"
 
 namespace :index do
   namespace :cran do
     desc 'make an index of cran packages'
-    task :perform do
-      loader = Helpers::HeavyFileLoader.new(PACKAGES, URL)
-      compressed_packages = loader.download
-      decompressed_packages = loader.ungzip(compressed_packages)
-      format_urls_from_packages(decompressed_packages)
+    task perform: :environment do
+      include Tasks::Support::PackageFields
+
+      compressed_packages = Helpers::HeavyFileUtils.download("#{URL}#{PACKAGES_FILE_NAME}")
+      decompressed_packages = Helpers::HeavyFileUtils.unpack_gz_by_batches(compressed_packages)
+
+      mapping = mapping_from_packages(decompressed_packages)
+
+      worker_pool = Tasks::Support::PackageWorker.pool(size: WORKERS_POOL_SIZE)
+
+      mapping.each do |m|
+        path = "#{Helpers::HeavyFileUtils::ROOT_DIR}/#{m[name]}"
+        worker_pool.async.process_package(m, path)
+        sleep 0.5
+      end
     end
   end
 end
 
-def get_package_version_mapping(decompressed_packages)
-  parser = DebianControlParser.new(decompressed_packages)
-  package_version_mapping = []
-  parser.paragraphs do |paragraph|
-    name = ''
-    version = ''
-    paragraph.fields do |key, value|
-      name = value if package_name?(key)
-      version = value if package_version?(key)
-    end
-    package_version_mapping << { package_key => name, version_key => version } if !name.empty? && !version.empty?
+def mapping_from_packages(decompressed_packages)
+  DebControl::ControlFileBase.read(decompressed_packages).paragraphs.map do |p|
+    {
+      name => p[name],
+      version => p[version],
+      url => "#{URL}#{p[name]}_#{p[version]}.tar.gz"
+    }
   end
-  package_version_mapping
-end
-
-def format_urls_from_packages(decompressed_packages)
-  mapping = get_package_version_mapping(decompressed_packages)
-end
-
-def package_name?(key)
-  key == package_key
-end
-
-def package_key
-  REQUIRED_FIELDS[0]
-end
-
-def package_version?(key)
-  key == version_key
-end
-
-def version_key
-  REQUIRED_FIELDS[1]
 end
