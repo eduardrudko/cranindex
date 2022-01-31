@@ -16,7 +16,7 @@ module Helpers
         uri = URI(URI.encode(url))
         file_path = "#{ROOT_DIR}/#{file_name_from_uri(uri)}"
 
-        return nil unless WHITE_LISTED_FORMATS.include?(uri.path.split('.').last)
+        raise ArgumentError, 'Invalid file type' unless WHITE_LISTED_FORMATS.include?(uri.path.split('.').last)
 
         fetch_and_save_by_fragments(uri, file_path)
       end
@@ -36,7 +36,7 @@ module Helpers
               end
             end
           rescue StandardError => e
-            FileUtils.rm_rf ROOT_DIR.to_s
+            FileUtils.remove_file file_path
             raise StandardError e
           end
           File.new(file_path)

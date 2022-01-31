@@ -32,10 +32,6 @@ GEM
     concurrent-ruby (1.1.9)
     deb_control (0.0.1)
     diff-lcs (1.5.0)
-    faraday (2.1.0)
-      faraday-net_http (~> 2.0)
-      ruby2_keywords (>= 0.0.4)
-    faraday-net_http (2.0.1)
     i18n (1.9.1)
       concurrent-ruby (~> 1.0)
     io-wait (0.2.1)
@@ -99,7 +95,6 @@ DEPENDENCIES
   activerecord
   celluloid (= 0.17.4)
   deb_control
-  faraday
   json
   logger
   net-http

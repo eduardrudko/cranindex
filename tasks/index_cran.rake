@@ -2,6 +2,7 @@
 
 require 'deb_control'
 require_relative '../helpers/heavy_file_utils'
+require_relative '../helpers/heavy_file_downloader'
 require_relative '../models/package'
 require_relative 'support/required_fields'
 require_relative 'support/package_worker'
@@ -18,20 +19,26 @@ namespace :index do
     task perform: :environment do
       include Tasks::Support::PackageFields
 
-      compressed_packages = Helpers::HeavyFileUtils.download("#{URL}#{PACKAGES_FILE_NAME}")
+      compressed_packages = Helpers::HeavyFileDownloader.download("#{URL}#{PACKAGES_FILE_NAME}")
       decompressed_packages = Helpers::HeavyFileUtils.unpack_gz_by_batches(compressed_packages)
 
       mapping = mapping_from_packages(decompressed_packages)
 
       worker_pool = Tasks::Support::PackageWorker.pool(size: WORKERS_POOL_SIZE)
 
-      mapping.each do |m|
-        path = "#{Helpers::HeavyFileUtils::ROOT_DIR}/#{m[name]}"
-        worker_pool.async.process_package(m, path)
-        sleep 0.5
+      mapping[0..1000].each do |m|
+        worker_pool.async.process_package(m, "#{Helpers::HeavyFileUtils::ROOT_DIR}/#{m[name]}")
+        sleep WORKERS_POOL_INTERVAL until worker_pool.idle_size.positive?
       end
+      shutdown_gracefully(worker_pool)
     end
   end
+end
+
+
+def shutdown_gracefully(pool)
+  sleep WORKERS_POOL_INTERVAL until pool.idle_size == WORKERS_POOL_SIZE
+  LOGGER.info 'Shut down gracefully ... hooray!'
 end
 
 def mapping_from_packages(decompressed_packages)

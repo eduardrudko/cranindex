@@ -15,7 +15,8 @@ DatabaseTasks.root = root
 
 LOGGER = Logger.new($stdout)
 
-WORKERS_POOL_SIZE = 5
+WORKERS_POOL_SIZE = 50 # Should not exceed size of the ActiveRecord connections pool defined at db/config.yml
+WORKERS_POOL_INTERVAL = 0.1
 
 task :environment do
   ActiveRecord::Base.configurations = DatabaseTasks.database_configuration

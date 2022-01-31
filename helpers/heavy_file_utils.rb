@@ -23,12 +23,14 @@ module Helpers
             io.write data
           end
         end
-        FileUtils.remove(file)
         File.new(unzipped_file_path)
+      ensure
+        FileUtils.remove(file)
       end
 
       def unpack_tar_gz(file)
         Gem::Package.new('').extract_tar_gz(file, ROOT_DIR)
+      ensure
         FileUtils.remove_file(file)
       end
     end
