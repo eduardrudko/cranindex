@@ -31,13 +31,13 @@ module Helpers
             http.request request do |response|
               File.open file_path, 'w' do |io|
                 response.read_body do |chunk|
-                  io.write chunk.force_encoding('UTF-8')
+                  io.write chunk.force_encoding(Encoding::UTF_8.name)
                 end
               end
             end
           rescue StandardError => e
             FileUtils.remove_file file_path
-            raise StandardError e
+            raise StandardError, e
           end
           File.new(file_path)
         end

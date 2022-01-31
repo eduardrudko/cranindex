@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'dcf'
 require 'deb_control'
 require_relative '../helpers/heavy_file_utils'
 require_relative '../helpers/heavy_file_downloader'
@@ -26,7 +27,7 @@ namespace :index do
 
       worker_pool = Tasks::Support::PackageWorker.pool(size: WORKERS_POOL_SIZE)
 
-      mapping[0..1000].each do |m|
+      mapping.each do |m|
         worker_pool.async.process_package(m, "#{Helpers::HeavyFileUtils::ROOT_DIR}/#{m[name]}")
         sleep WORKERS_POOL_INTERVAL until worker_pool.idle_size.positive?
       end
@@ -34,7 +35,6 @@ namespace :index do
     end
   end
 end
-
 
 def shutdown_gracefully(pool)
   sleep WORKERS_POOL_INTERVAL until pool.idle_size == WORKERS_POOL_SIZE
