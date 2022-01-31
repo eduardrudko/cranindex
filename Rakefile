@@ -14,8 +14,8 @@ DatabaseTasks.migrations_paths = [File.join(root, 'db/migrations')]
 DatabaseTasks.root = root
 
 LOGGER = Logger.new($stdout)
-WORKERS_POOL_SIZE = 5
 
+WORKERS_POOL_SIZE = 5
 
 task :environment do
   ActiveRecord::Base.configurations = DatabaseTasks.database_configuration

@@ -19,12 +19,6 @@ class BaseApp < Sinatra::Base
   ActiveRecord::Base.configurations = config
   ActiveRecord::Base.establish_connection env.to_sym
 
-  before do
-    if request.content_length.to_i.positive?
-      request.body.rewind
-      @body = JSON.parse request.body.read, symbolize_names: true
-    end
-  end
 end
 
 Dir.glob('./models/*.rb').sort.each do |file|

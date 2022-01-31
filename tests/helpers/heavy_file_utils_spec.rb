@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative '../../helpers/heavy_file_utils'
+require_relative '../../helpers/heavy_file_downloader'
 
 RSpec.describe Helpers::HeavyFileUtils do
 
@@ -11,18 +12,14 @@ RSpec.describe Helpers::HeavyFileUtils do
     FileUtils.rm_rf('tmp')
   end
 
-  context 'when there is a file on a server' do
-    it 'downloads it and saves in tmp/' do
-      expect(File.file?(Helpers::HeavyFileUtils.download(url))).to be true
-    end
-
+  context 'when there is a ' do
     it 'unzips gz files and saves decompressed file in tmp/' do
-      file = Helpers::HeavyFileUtils.download(url)
+      file = Helpers::HeavyFileDownloader.download(url)
       expect(Helpers::HeavyFileUtils.unpack_gz_by_batches(file)).not_to end_with '.gz'
     end
 
     it 'unpacks tar.gz file and saves it in tmp/' do
-      tar_gz = Helpers::HeavyFileUtils.download(package_url)
+      tar_gz = Helpers::HeavyFileDownloader.download(package_url)
       Helpers::HeavyFileUtils.unpack_tar_gz(tar_gz)
       expect(File.directory?("tmp/A3")).to be true
     end
