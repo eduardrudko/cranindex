@@ -17,9 +17,14 @@ module Tasks
                                                                                              replace: '?'))
         upsert_package_data(desc, package_mapping[url])
         LOGGER.info "Finished processing #{package_mapping}"
+      rescue StandardError => e
+        skip(e, package_mapping)
       ensure
         FileUtils.remove_dir(path.to_s) if File.exist?(path.to_s)
       end
+
+
+      private
 
       def upsert_package_data(desc, url)
         desc.each do |p|
@@ -29,11 +34,19 @@ module Tasks
             dependencies: p[depends]&.split(',')&.drop(1)&.join&.strip,
             date_of_publication: p[date_of_publication],
             title: p[title],
+            authors: p[author],
             maintainers: p[maintainer],
             license: p[license],
             url: url
           )
         end
+      end
+
+      def skip(e, package_mapping)
+        LOGGER.error 'Something went wrong processing package, skipping it.' \
+        "\nPackage: #{package_mapping[name]}" \
+        "\nError: #{e}" \
+        "\nTrace: #{e.backtrace}"
       end
     end
   end
