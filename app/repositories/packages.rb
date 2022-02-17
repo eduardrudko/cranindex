@@ -4,11 +4,17 @@ module Repositories
   module PackageRepository
     module_function
 
-    def get_packages_based_on(placeholder, params)
+    def packages_based_on(placeholder, params)
       if params[:dependencies]
         packages = Package.where("#{placeholder} LIKE ?", "%#{params[placeholder]}%")
         packages || []
       end
+    end
+
+    def list_of_emails
+      pattern = '%<%@%.%>%'
+      emails = Package.select(:id, :authors, :maintainers).where('authors like ? or maintainers like ?', pattern, pattern)
+      emails || []
     end
   end
 end

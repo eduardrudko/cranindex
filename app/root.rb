@@ -8,10 +8,17 @@ class RootApp < BaseApp
 
   get '/packages' do
     if params[:dependencies]
-      package = Repositories::PackageRepository.get_packages_based_on(:dependencies, params)
-      json resonse: {
+      package = Repositories::PackageRepository.packages_based_on(:dependencies, params)
+      json response: {
         data: package
       }
     end
+  end
+
+  get '/packages/emails' do
+    emails = Repositories::PackageRepository.list_of_emails
+    json response: {
+      data: emails
+    }
   end
 end

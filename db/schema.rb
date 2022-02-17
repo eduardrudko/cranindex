@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 1) do
+ActiveRecord::Schema.define(version: 2) do
 
   create_table "packages", force: :cascade do |t|
     t.string "name"
@@ -23,6 +23,8 @@ ActiveRecord::Schema.define(version: 1) do
     t.string "maintainers"
     t.string "license"
     t.string "url"
+    t.index ["authors"], name: "index_packages_on_authors"
+    t.index ["maintainers"], name: "index_packages_on_maintainers"
     t.index ["name"], name: "index_packages_on_name"
   end
 
