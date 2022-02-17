@@ -18,7 +18,6 @@ class BaseApp < Sinatra::Base
 
   ActiveRecord::Base.configurations = config
   ActiveRecord::Base.establish_connection env.to_sym
-
 end
 
 Dir.glob('./models/*.rb').sort.each do |file|
@@ -26,6 +25,10 @@ Dir.glob('./models/*.rb').sort.each do |file|
 end
 
 Dir.glob('./app/*.rb').sort.each do |file|
+  require file
+end
+
+Dir.glob('./app/repositories/*.rb').sort.each do |file|
   require file
 end
 
