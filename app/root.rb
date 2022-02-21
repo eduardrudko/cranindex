@@ -8,7 +8,7 @@
 # Constrains
 # What is the output should be?
 # Should it be two lists based on authors and maintainers respectfully or merged list of both?
-# Should it be ordered by authors/maintainers name or email?
+# Should the output contain mapping between authors/maintainers or just an array of emails?
 # Should list contain only distinct emails?
 #
 #3. Who is the person that has contributed on more packages?
@@ -20,19 +20,17 @@ class RootApp < BaseApp
   end
 
   get '/packages' do
-    if params[:dependencies]
-      package = Repositories::PackageRepository.packages_based_on(:dependencies, params)
-      json response: {
-        data: package
-      }
-    end
+    package = Repositories::PackageRepository.packages_based_on(:dependencies, params)
+    json response: {
+      data: package
+    }
   end
 
   get '/packages/contributor' do
     contributor = Repositories::PackageRepository.contributor
     if contributor
       json response: {
-        data: emails
+        data: contributor
       }
     else
       status 404

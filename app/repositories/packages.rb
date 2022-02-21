@@ -20,14 +20,7 @@ module Repositories
 
     def contributor
       count = {}
-      emails.each do |c|
-        if count[c].nil?
-          count[c] = 1
-        else
-          count[c] += 1
-        end
-      end
-      count = {}
+      emails.each { |c|count[c].nil? ? count[c] = 1 : count[c] += 1 }
       count.max { |a, b| a[1] <=> b[1] }[0] unless count.empty?
     end
 
@@ -36,7 +29,7 @@ module Repositories
       emails = []
       Package
         .select(:id, :authors, :maintainers)
-        .where('authors like ? OR maintainers LIKE ?', pattern, pattern)
+        .where('authors LIKE ? OR maintainers LIKE ?', pattern, pattern)
         .find_each do |package|
           emails.concat(package.authors.scan(EMAIL_REGEX))
           emails.concat(package.maintainers.scan(EMAIL_REGEX))
