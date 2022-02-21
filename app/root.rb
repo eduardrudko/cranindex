@@ -28,8 +28,22 @@ class RootApp < BaseApp
     end
   end
 
+  get '/packages/contributor' do
+    contributor = Repositories::PackageRepository.contributor
+    if contributor
+      json response: {
+        data: emails
+      }
+    else
+      status 404
+      json response: {
+        error: 'No contributors found'
+      }
+    end
+  end
+
   get '/packages/emails' do
-    emails = Repositories::PackageRepository.emails
+    emails = Repositories::PackageRepository.uniq_emails
     json response: {
       data: emails
     }
