@@ -77,3 +77,4 @@ To view report you can use any free csv reader e.g.: https://limonte.github.io/c
 6. Summary with succeed and failed threads
 7. Prettier look of report
 8. Spin up workers rather that shoot
+9. Upsert in batches
